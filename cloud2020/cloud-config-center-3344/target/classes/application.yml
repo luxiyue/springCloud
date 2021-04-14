@@ -1,0 +1,45 @@
+server:
+  port: 3344
+
+spring:
+  application:
+    name: cloud-config-center #注册进Eureka服务器的微服务名
+  cloud:
+    config:
+      server:
+        git:
+#          uri: git@github.com:luxiyue/org.lzl.springcloud-config.git #GitHub上面的git仓库名字
+#          uri: https://github.com/luxiyue/springcloud-config.git
+          uri: https://gitee.com/lu-zelong/org.lzl.springcloud-config.git
+#          uri: git@gitee.com:lu-zelong/org.lzl.springcloud-config.git
+          search-paths:                   #搜索目录
+            - org.lzl.springcloud-config
+#          force-pull: true
+#          username: luxiyue
+#          password: luzelong1124
+      ####读取分支
+      label: master
+  #rabbitmq相关配置 15672是Web管理界面的端口；5672是MQ访问的端口
+  rabbitmq:
+    host: 192.168.43.76
+    port: 5672
+    username: guest
+    password: guest
+
+
+#服务注册到eureka地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'bus-refresh'   #curl -X POST "http://localhost:3344/actuator/bus-refresh" #curl -X POST "http://localhost:3344/actuator/bus-refresh/config-client:3366"
+
+#http://localhost:3344/master/config-dev.yml
+#http://localhost:3344/config-dev.yml
+#http://localhost:3344/config/dev/master
